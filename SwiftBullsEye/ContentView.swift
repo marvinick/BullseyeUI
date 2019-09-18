@@ -11,49 +11,61 @@ import SwiftUI
 struct ContentView: View {
     
     @State var alertIsVisible: Bool = false
-    @State var whoIsVisible: Bool = false
+    @State var sliderValue: Double = 50
     
     var body: some View {
-        HStack {
-            VStack {
-                Text("Welcome to my first app")
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color.green)
-                Button(action: {
-                    print("Button pressed")
-                    self.alertIsVisible = true
-                }) {
-                    Text("Hit me")
+        
+        VStack {
+            Spacer()
+            //Target row
+            HStack {
+                Text("Put the bullseye as close as you can to:")
+                Text("100")
+            }
+            Spacer()
+            //Slider row
+            HStack {
+                Text("1")
+                Slider(value: self.$sliderValue, in: 1...100)
+                Text("100")
+            }
+            Spacer()
+            //Button row
+            Button(action: {
+                print("Button pressed")
+                self.alertIsVisible = true
+            }) {
+                Text("Hit me")
+            }
+            .alert(isPresented: $alertIsVisible) { () ->
+                Alert in
+                var roundedValue: Int = Int(sliderValue.rounded())
+                return Alert(title: Text("Hello there!"), message: Text("This slider value is \(roundedValue)."), dismissButton: .default(Text("Awesome!")))
+            }
+            Spacer()
+            //score row
+            HStack {
+                Button(action: {}) {
+                    Text("Start over")
                 }
-                .alert(isPresented: $alertIsVisible) { () ->
-                    Alert in
-                    return Alert(title: Text("Hello there!"), message: Text("This is my message button."), dismissButton: .default(Text("Awesome!")))
+                Spacer()
+                Text("Score:")
+                Text("9999")
+                Spacer()
+                Text("Placeholder")
+                Text("9999")
+                Spacer()
+                Button(action: {}) {
+                    Text("Info")
                 }
             }
-            
-            VStack {
-                Text("Second one, knock knock joke")
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color.red)
-                Button(action: {
-                    print("Button pressed")
-                    self.whoIsVisible = true
-                }) {
-                    Text("Joke")
-                }
-                .alert(isPresented: $whoIsVisible) { () ->
-                    Alert in
-                    return Alert(title: Text("Who's there!"), message: Text("Cow. Bondi. Babe."), dismissButton: .default(Text("Eww!")))
-                }
-            }
+            .padding(.bottom, 20)
         }
-        
-        
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().previewLayout(.fixed(width: 896, height: 414))
     }
 }
